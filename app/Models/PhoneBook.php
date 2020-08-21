@@ -10,6 +10,11 @@ namespace App\Models;
 class PhoneBook
 {
     /**
+     * @var integer
+     */
+    public $id;
+
+    /**
      * @var string
      */
     public $firstName;
@@ -54,5 +59,16 @@ insertedOn (required) - DateTime type
 updatedOn (required) - DateTime type
 
  */
+    /**
+     * @param array $arguments
+     * @return static
+     */
+    public static function create($arguments = []) {
+        $instance = new static();
+        foreach ($arguments as $key=>$value) {
+            $instance->{$key} = $value;
+        }
+        return $instance;
+    }
 
 }

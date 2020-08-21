@@ -4,8 +4,17 @@
 namespace App;
 
 
+use App\Controllers\BaseController;
+use App\Controllers\JsonResponse;
+use App\Controllers\Request;
 use Bramus\Router\Router;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class InvokeRoute
+ * @package App
+ */
 class InvokeRoute
 {
     /**
@@ -17,6 +26,11 @@ class InvokeRoute
      * @var string
      */
     private $namespace;
+
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
 
     /**
      * InvokeRoute constructor.
@@ -48,6 +62,40 @@ class InvokeRoute
     }
 
     /**
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
+
+    /**
+     *
+     */
+    public function send() {
+        if(is_null($this->response)) {
+            return;
+        }
+
+        $statusLine = sprintf('HTTP/%s %s %s'
+            , $this->response->getProtocolVersion()
+            , $this->response->getStatusCode()
+            , $this->response->getReasonPhrase()
+        );
+        header($statusLine, TRUE);
+        foreach ($this->response->getHeaders() as $name => $values) {
+            $responseHeader = sprintf('%s: %s'
+                , $name
+                , $this->response->getHeaderLine($name)
+            );
+            header($responseHeader, FALSE);
+        }
+
+        echo $this->response->getBody();
+        exit();
+    }
+
+    /**
      * @param $name
      * @param array $arguments
      * @throws InvokeRouteException
@@ -68,10 +116,16 @@ class InvokeRoute
             $className = "{$this->namespace}\\{$className}";
         }
         $inst = $this->app->getObject($className);
+        if(method_exists($inst, 'setRequest')) {
+            $request = $this->app->getObject(Request::class);
+            $inst->setRequest($request);
+        }
 
         if(!method_exists($inst, $method)) {
             throw new InvokeRouteException("");
         }
-        call_user_func_array([$inst, $method], $arguments);
+        $this->response = call_user_func_array([$inst, $method], $arguments);
     }
+
+
 }

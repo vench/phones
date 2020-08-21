@@ -3,16 +3,19 @@
 
 namespace App\Controllers;
 
-
+/**
+ * Class ErrorController
+ * @package App\Controllers
+ */
 class ErrorController extends BaseController
 {
     /**
      *
      */
     public function notFound() {
-        $this->render([
+        return $this->response([
             'message' => 'page not found',
-        ]);
+        ], 404);
     }
 
 }

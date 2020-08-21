@@ -4,6 +4,8 @@ namespace App;
 
 
 
+use App\Controllers\Request;
+
 /**
  * Class App
  * @package App
@@ -11,19 +13,40 @@ namespace App;
 class App
 {
 
+    /**
+     * @var array
+     */
     private $objectInst = [];
 
 
     public function __construct() {
-
     }
 
     /**
-     *
+     * @throws \ReflectionException
      */
-    public function run() {
+    public function runWeb() {
         $this->initConfig();
-        $this->initRoute();
+        $invRoute =  $this->initRoute();
+        $invRoute->send();
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function runCli()
+    {
+        $this->initConfig();
+    }
+
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \ReflectionException
+     */
+    public function runTest() {
+        $this->initConfig();
+        $invRoute =  $this->initRoute();
+        return $invRoute->getResponse();
     }
 
     /**
@@ -35,11 +58,21 @@ class App
     }
 
     /**
-     *
+     * @return InvokeRoute
      */
     private function initRoute() {
+        $this->setObject(Request::class, Request::create());
         $invokeRoute = new InvokeRoute($this);
         $invokeRoute->run();
+        return $invokeRoute;
+    }
+
+    /**
+     * @param string $className
+     * @param $instance
+     */
+    public function setObject($className, $instance) {
+        $this->objectInst[$className] = $instance;
     }
 
     /**
