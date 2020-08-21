@@ -38,6 +38,32 @@ class App
     /**
      * @throws ReflectionException
      */
+    public function runCli()
+    {
+        $this->initConfig();
+        printf("App name: %s \n", getenv('APP_NAME'));
+
+        $config = $this->getObject(Config::class);
+        var_dump($config->get('APP_NAME'));
+        return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($config->createEntityManager());
+
+    }
+
+
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function runTest()
+    {
+        $this->initConfig();
+        $invRoute = $this->initRoute();
+        return $invRoute->getResponse();
+    }
+
+    /**
+     * @throws ReflectionException
+     */
     private function initConfig()
     {
         $config = $this->getObject(Config::class);
@@ -52,7 +78,6 @@ class App
      */
     public function getObject($className, $newInst = false)
     {
-
         if (!$newInst && isset($this->objectInst[$className])) {
             return $this->objectInst[$className];
         }
@@ -72,7 +97,7 @@ class App
         }
 
         $inst = $ref->newInstanceArgs($args);
-        if ($newInst) {
+        if (!$newInst) {
             $this->objectInst[$className] = $inst;
         }
         return $inst;
@@ -98,22 +123,4 @@ class App
         $this->objectInst[$className] = $instance;
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function runCli()
-    {
-        $this->initConfig();
-    }
-
-    /**
-     * @return ResponseInterface
-     * @throws ReflectionException
-     */
-    public function runTest()
-    {
-        $this->initConfig();
-        $invRoute = $this->initRoute();
-        return $invRoute->getResponse();
-    }
 }

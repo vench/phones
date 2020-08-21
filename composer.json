@@ -8,7 +8,9 @@
     ],
     "require": {
         "bramus/router": "~1.4",
-        "guzzlehttp/psr7": "1.6.*"
+        "guzzlehttp/psr7": "1.6.*",
+        "doctrine/orm": "^2.6.2",
+        "vlucas/phpdotenv": "^5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
