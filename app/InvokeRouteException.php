@@ -4,7 +4,9 @@
 namespace App;
 
 
-class InvokeRouteException extends \Exception
+use Exception;
+
+class InvokeRouteException extends Exception
 {
 
 }

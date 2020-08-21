@@ -9,9 +9,6 @@ use App\Repositories\PhoneBookRepository;
 use App\Validators\PhoneBookValidator;
 
 
-
-
-
 /**
  * Class PhoneBookController
  * @package App\Controllers
@@ -45,7 +42,8 @@ class PhoneBookController extends BaseController
     /**
      *
      */
-    public function all() {
+    public function all()
+    {
 
         $request = $this->getRequest();
         $limit = $request->get('limit', 10);
@@ -65,9 +63,10 @@ class PhoneBookController extends BaseController
      * @param $id
      * @return JsonResponse
      */
-    public function one($id) {
+    public function one($id)
+    {
         $item = $this->phoneBookRepository->one($id);
-        if(is_null($item)) {
+        if (is_null($item)) {
             return $this->response([], 404);
         }
         return $this->response([
@@ -75,12 +74,13 @@ class PhoneBookController extends BaseController
         ]);
     }
 
-    public function create() {
+    public function create()
+    {
 
         $request = $this->getRequest();
         $data = $request->json() ?? [];
         $model = PhoneBook::create($data);
-        if(!$this->phoneBookValidator->validate($model)) {
+        if (!$this->phoneBookValidator->validate($model)) {
             $this->response([
                 'errors' => $this->phoneBookValidator->getErrors(),
             ], 422);
@@ -96,18 +96,19 @@ class PhoneBookController extends BaseController
      * @param $id
      * @return JsonResponse
      */
-    public function update($id) {
+    public function update($id)
+    {
 
         $request = $this->getRequest();
         $data = $request->json();
         $model = PhoneBook::create($data);
-        if(!$this->phoneBookValidator->validate($model)) {
+        if (!$this->phoneBookValidator->validate($model)) {
             $this->response([
                 'errors' => $this->phoneBookValidator->getErrors(),
             ], 422);
         }
         $model->id = $id;
-        if($this->phoneBookRepository->update($model) == 0) {
+        if ($this->phoneBookRepository->update($model) == 0) {
             return $this->response([], 404);
         }
 
@@ -120,8 +121,9 @@ class PhoneBookController extends BaseController
      * @param $id
      * @return JsonResponse
      */
-    public function delete($id) {
-        return $this->response([ ]);
+    public function delete($id)
+    {
+        return $this->response([]);
     }
 
 

@@ -4,12 +4,10 @@
 namespace App;
 
 
-use App\Controllers\BaseController;
-use App\Controllers\JsonResponse;
 use App\Controllers\Request;
 use Bramus\Router\Router;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 
 /**
  * Class InvokeRoute
@@ -37,7 +35,8 @@ class InvokeRoute
      * @param App $app
      * @param string $namespace
      */
-    public function __construct(App $app, $namespace = '\App\Controllers') {
+    public function __construct(App $app, $namespace = '\App\Controllers')
+    {
         $this->app = $app;
         $this->namespace = $namespace;
     }
@@ -45,11 +44,12 @@ class InvokeRoute
     /**
      *
      */
-    public function run() {
+    public function run()
+    {
         $router = new Router();
         $router->setNamespace($this->namespace);
         $router->set404('ErrorController@notFound');
-        $router->before('GET|POST|DELETE|PUT', '/phone-book.*', function() {
+        $router->before('GET|POST|DELETE|PUT', '/phone-book.*', function () {
             // TODO set Middlewares
         });
 
@@ -72,8 +72,9 @@ class InvokeRoute
     /**
      *
      */
-    public function send() {
-        if(is_null($this->response)) {
+    public function send()
+    {
+        if (is_null($this->response)) {
             return;
         }
 
@@ -99,29 +100,30 @@ class InvokeRoute
      * @param $name
      * @param array $arguments
      * @throws InvokeRouteException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    public function __call($name, $arguments = []) {
-        if(strpos($name, '@') === false) {
+    public function __call($name, $arguments = [])
+    {
+        if (strpos($name, '@') === false) {
             throw new InvokeRouteException("");
         }
 
-        $names =  explode('@', $name);
-        if(count($names) != 2) {
+        $names = explode('@', $name);
+        if (count($names) != 2) {
             throw new InvokeRouteException("");
         }
         list($className, $method) = $names;
 
-        if(!empty($this->namespace)) {
+        if (!empty($this->namespace)) {
             $className = "{$this->namespace}\\{$className}";
         }
         $inst = $this->app->getObject($className);
-        if(method_exists($inst, 'setRequest')) {
+        if (method_exists($inst, 'setRequest')) {
             $request = $this->app->getObject(Request::class);
             $inst->setRequest($request);
         }
 
-        if(!method_exists($inst, $method)) {
+        if (!method_exists($inst, $method)) {
             throw new InvokeRouteException("");
         }
         $this->response = call_user_func_array([$inst, $method], $arguments);

@@ -18,15 +18,26 @@ class PhoneBookValidator
      * @param PhoneBook $model
      * @return bool
      */
-    public function validate(PhoneBook $model) {
+    public function validate(PhoneBook $model)
+    {
         $this->errors = [];
-        if(empty($model->firstName)) {
+
+        if (empty($model->firstName)) {
             $this->errors['firstName'] = 'not ';
         }
+
+        if (empty($model->id)) { // new
+
+        }
+
         return empty($this->errors);
     }
 
-    public function getErrors() {
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
         return $this->errors;
     }
 }

@@ -14,7 +14,8 @@ class PhoneBookRepository
      * @param int $limit
      * @return PhoneBook[]
      */
-    public function all($offset = 0, $limit = 10) {
+    public function all($offset = 0, $limit = 10)
+    {
 
         return [];
     }
@@ -22,7 +23,8 @@ class PhoneBookRepository
     /**
      * @return int
      */
-    public function total() {
+    public function total()
+    {
         return 0;
     }
 
@@ -30,16 +32,18 @@ class PhoneBookRepository
      * @param $id
      * @return PhoneBook
      */
-    public function one($id) {
-        return  PhoneBook::create([
-            'id'    => $id,
+    public function one($id)
+    {
+        return PhoneBook::create([
+            'id' => $id,
         ]);
     }
 
     /**
      * @param PhoneBook $phoneBook
      */
-    public function create(PhoneBook $phoneBook) {
+    public function create(PhoneBook $phoneBook)
+    {
         $phoneBook->id = 1;
     }
 
@@ -47,7 +51,8 @@ class PhoneBookRepository
      * @param PhoneBook $phoneBook
      * @return int
      */
-    public function update(PhoneBook $phoneBook) {
+    public function update(PhoneBook $phoneBook)
+    {
         return 1;
     }
 }

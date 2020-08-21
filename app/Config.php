@@ -7,7 +7,8 @@ namespace App;
 class Config
 {
 
-    public function run() {
+    public function run()
+    {
         // TODO load dot env
     }
 }

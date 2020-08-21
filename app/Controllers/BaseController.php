@@ -15,13 +15,16 @@ abstract class BaseController
      */
     private $request = null;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * @return Request
      */
-    public function getRequest() {
-        if(is_null($this->request)) {
+    public function getRequest()
+    {
+        if (is_null($this->request)) {
             $this->request = Request::create();
         }
         return $this->request;
@@ -30,7 +33,8 @@ abstract class BaseController
     /**
      * @param Request $request
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
     }
 
@@ -39,7 +43,8 @@ abstract class BaseController
      * @param int $code
      * @return JsonResponse
      */
-    public function response($body, $code= 200) {
+    public function response($body, $code = 200)
+    {
         $response = JsonResponse::create($body, $code);
         return $response;
     }

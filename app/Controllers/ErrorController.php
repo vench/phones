@@ -12,7 +12,8 @@ class ErrorController extends BaseController
     /**
      *
      */
-    public function notFound() {
+    public function notFound()
+    {
         return $this->response([
             'message' => 'page not found',
         ], 404);
