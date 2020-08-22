@@ -5,6 +5,7 @@ namespace App;
 
 use App\Controllers\JsonResponse;
 use App\Controllers\Request;
+use App\Service\Log;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use ReflectionException;
@@ -91,7 +92,7 @@ class App
             $errorResponse = JsonResponse::createError($e->getMessage(), $e->getCode());
             $invokeRoute->setResponse($errorResponse);
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
+            $this->getObject(Log::class)->log($e->getMessage());
             $errorResponse = JsonResponse::createError('Internal application error', 500);
             $invokeRoute->setResponse($errorResponse);
         }

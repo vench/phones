@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class PhoneBook
@@ -29,7 +30,7 @@ class PhoneBook
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="last_name")
+     * @ORM\Column(type="string", name="last_name", nullable=true)
      */
     public $lastName;
 
@@ -41,13 +42,13 @@ class PhoneBook
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="country_code", length=2)
+     * @ORM\Column(type="string", name="country_code", length=2, nullable=true)
      */
     public $countryCode;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="timezone_name", length=20)
+     * @ORM\Column(type="string", name="timezone_name", length=20, nullable=true)
      */
     public $timezoneName;
 
@@ -63,16 +64,6 @@ class PhoneBook
      */
     public $updatedOn;
 
-    /*
-     * First name (required)
-    Last name
-    Phone number (required) - must be validated based on some standard, e.g. +12 223 444224455
-    Country code - country code should be validated via https://api.hostaway.com/countries
-    Timezone name - should be validated via https://api.hostaway.com/timezones
-    insertedOn (required) - DateTime type
-    updatedOn (required) - DateTime type
-
-     */
     /**
      * @param array $arguments
      * @return static

@@ -10,7 +10,9 @@
         "bramus/router": "~1.4",
         "guzzlehttp/psr7": "1.6.*",
         "doctrine/orm": "^2.6.2",
-        "vlucas/phpdotenv": "^5.1"
+        "vlucas/phpdotenv": "^5.1",
+        "giggsey/libphonenumber-for-php": "^8.12",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

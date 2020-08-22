@@ -86,9 +86,7 @@ class PhoneBookController extends BaseController
         $data = $request->json() ?? [];
         $model = PhoneBook::create($data);
         if (!$this->phoneBookValidator->validate($model)) {
-            $this->response([
-                'errors' => $this->phoneBookValidator->getErrors(),
-            ], 422);
+            return  $this->responseError('validation error', 422, $this->phoneBookValidator->getErrors());
         }
         $this->phoneBookRepository->create($model);
 
@@ -109,9 +107,7 @@ class PhoneBookController extends BaseController
         $model->id = $id;
 
         if (!$this->phoneBookValidator->validate($model)) {
-            $this->response([
-                'errors' => $this->phoneBookValidator->getErrors(),
-            ], 422);
+            return  $this->responseError('validation error', 422, $this->phoneBookValidator->getErrors());
         }
 
         $update = $this->phoneBookRepository->update($model);

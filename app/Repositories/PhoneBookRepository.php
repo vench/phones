@@ -31,6 +31,21 @@ class PhoneBookRepository
     }
 
     /**
+     * @param $phone
+     * @return mixed|object|null
+     */
+    public function byPhone($phone) {
+        $repo = $this->entityManager->getRepository(PhoneBook::class);
+        $items = $repo->findBy([
+            'phoneNumber'  => $phone,
+        ]);
+        if(count($items) > 0) {
+            return $items[0];
+        }
+        return null;
+    }
+
+    /**
      * @param int $offset
      * @param int $limit
      * @return array
