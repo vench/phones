@@ -3,6 +3,7 @@
 namespace App;
 
 
+use App\Controllers\JsonResponse;
 use App\Controllers\Request;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
@@ -42,11 +43,6 @@ class App
     {
         $this->initConfig();
         printf("App name: %s \n", getenv('APP_NAME'));
-
-        $config = $this->getObject(Config::class);
-        var_dump($config->get('APP_NAME'));
-        return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet($config->createEntityManager());
-
     }
 
 
@@ -110,7 +106,17 @@ class App
     {
         $this->setObject(Request::class, Request::create());
         $invokeRoute = new InvokeRoute($this);
-        $invokeRoute->run();
+        try {
+            $invokeRoute->run();
+        } catch (\HttpException $e) {
+            $errorResponse = JsonResponse::createError($e->getMessage(), $e->getCode());
+            $invokeRoute->setResponse($errorResponse);
+        }catch (\Exception $e) {
+            var_dump($e->getMessage());
+            $errorResponse = JsonResponse::createError('Internal application error', 500);
+            $invokeRoute->setResponse($errorResponse);
+        }
+
         return $invokeRoute;
     }
 

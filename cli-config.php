@@ -3,7 +3,13 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use \App\App;
+use App\App;
+use App\Config;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 $app = new App();
-return $app->runCli();
+$app->runCli();
+
+$config = $app->getObject(Config::class);
+
+return ConsoleRunner::createHelperSet($config->createEntityManager());

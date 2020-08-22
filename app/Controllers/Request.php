@@ -53,6 +53,15 @@ class Request extends GuzzleRequest
     }
 
     /**
+     * @param $key
+     * @param null $default
+     * @return int
+     */
+    public function getInt($key, $default = null) {
+        return intval($this->get($key, $default));
+    }
+
+    /**
      * @return mixed
      */
     public function json()

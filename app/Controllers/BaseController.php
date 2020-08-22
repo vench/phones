@@ -49,4 +49,16 @@ abstract class BaseController
         return $response;
     }
 
+    /**
+     * @param $message
+     * @param int $code
+     * @param null $payload
+     * @return JsonResponse
+     */
+    public function responseError($message, $code = 500, $payload=null)
+    {
+        $response = JsonResponse::createError($message, $code, $payload);
+        return $response;
+    }
+
 }

@@ -70,6 +70,14 @@ class InvokeRoute
     }
 
     /**
+     * @param ResponseInterface $response
+     */
+    public function setResponse(ResponseInterface $response): void
+    {
+        $this->response = $response;
+    }
+
+    /**
      *
      */
     public function send()
