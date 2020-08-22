@@ -24,7 +24,8 @@ class PhoneBookRepository
      * @param Config $config
      * @throws \Doctrine\ORM\ORMException
      */
-    public function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
 
         $this->entityManager = $config->createEntityManager();
     }
@@ -51,17 +52,6 @@ class PhoneBookRepository
     }
 
     /**
-     * @param $id
-     * @return PhoneBook
-     */
-    public function one($id)
-    {
-        $repo = $this->entityManager->getRepository(PhoneBook::class);
-        $item = $repo->find($id);
-        return $item;
-    }
-
-    /**
      * @param PhoneBook $phoneBook
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -83,7 +73,7 @@ class PhoneBookRepository
     public function update(PhoneBook $phoneBook)
     {
         $phoneBookOld = $this->one($phoneBook->id);
-        if(is_null($phoneBookOld)){
+        if (is_null($phoneBookOld)) {
             return null;
         }
 
@@ -101,13 +91,25 @@ class PhoneBookRepository
 
     /**
      * @param $id
+     * @return PhoneBook
+     */
+    public function one($id)
+    {
+        $repo = $this->entityManager->getRepository(PhoneBook::class);
+        $item = $repo->find($id);
+        return $item;
+    }
+
+    /**
+     * @param $id
      * @return bool
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $phoneBook = $this->one($id);
-        if(is_null($phoneBook)){
+        if (is_null($phoneBook)) {
             return false;
         }
         $this->entityManager->remove($phoneBook);

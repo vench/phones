@@ -15,7 +15,8 @@ class PhoneBookControllerTest extends TestBase
     /**
      *
      */
-    public function testAll() {
+    public function testAll()
+    {
         $response = $this->httpGet('/phone-book');
         $this->assertEquals($response->getStatusCode(), 200);
         $data = json_decode($response->getBody(), true);
@@ -28,7 +29,8 @@ class PhoneBookControllerTest extends TestBase
     /**
      *
      */
-    public function testOne() {
+    public function testOne()
+    {
         $id = $this->testCreate();
         $this->assertNotEmpty($id);
 
@@ -41,7 +43,8 @@ class PhoneBookControllerTest extends TestBase
     /**
      *
      */
-    public function testCreate() {
+    public function testCreate()
+    {
         $item = PhoneBook::create([
             'firstName' => 'firstName',
         ]);
@@ -61,7 +64,8 @@ class PhoneBookControllerTest extends TestBase
     /**
      *
      */
-    public function testUpdate() {
+    public function testUpdate()
+    {
         $id = $this->testCreate();
         $this->assertNotEmpty($id);
 
@@ -80,7 +84,8 @@ class PhoneBookControllerTest extends TestBase
     /**
      *
      */
-    public function testDelete() {
+    public function testDelete()
+    {
         $id = $this->testCreate();
         $this->assertNotEmpty($id);
         $response = $this->httpDelete("/phone-book/{$id}");

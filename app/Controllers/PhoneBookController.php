@@ -130,7 +130,7 @@ class PhoneBookController extends BaseController
      */
     public function delete($id)
     {
-        if(!$this->phoneBookRepository->delete($id)) {
+        if (!$this->phoneBookRepository->delete($id)) {
             return $this->responseError('not found', 404);
         }
         return $this->response([]);

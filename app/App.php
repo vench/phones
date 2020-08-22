@@ -39,27 +39,6 @@ class App
     /**
      * @throws ReflectionException
      */
-    public function runCli()
-    {
-        $this->initConfig();
-        printf("App name: %s \n", getenv('APP_NAME'));
-    }
-
-
-    /**
-     * @return ResponseInterface
-     * @throws ReflectionException
-     */
-    public function runTest()
-    {
-        $this->initConfig();
-        $invRoute = $this->initRoute();
-        return $invRoute->getResponse();
-    }
-
-    /**
-     * @throws ReflectionException
-     */
     private function initConfig()
     {
         $config = $this->getObject(Config::class);
@@ -111,7 +90,7 @@ class App
         } catch (\HttpException $e) {
             $errorResponse = JsonResponse::createError($e->getMessage(), $e->getCode());
             $invokeRoute->setResponse($errorResponse);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             var_dump($e->getMessage());
             $errorResponse = JsonResponse::createError('Internal application error', 500);
             $invokeRoute->setResponse($errorResponse);
@@ -127,6 +106,26 @@ class App
     public function setObject($className, $instance)
     {
         $this->objectInst[$className] = $instance;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function runCli()
+    {
+        $this->initConfig();
+        printf("App name: %s \n", getenv('APP_NAME'));
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws ReflectionException
+     */
+    public function runTest()
+    {
+        $this->initConfig();
+        $invRoute = $this->initRoute();
+        return $invRoute->getResponse();
     }
 
 }

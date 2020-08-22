@@ -55,7 +55,7 @@ abstract class BaseController
      * @param null $payload
      * @return JsonResponse
      */
-    public function responseError($message, $code = 500, $payload=null)
+    public function responseError($message, $code = 500, $payload = null)
     {
         $response = JsonResponse::createError($message, $code, $payload);
         return $response;

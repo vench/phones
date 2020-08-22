@@ -14,6 +14,23 @@ class JsonResponse extends Response
 {
 
     /**
+     * @param $message
+     * @param int $code
+     * @param null $payload
+     * @return static
+     */
+    public static function createError($message, $code = 500, $payload = null)
+    {
+        return static::create([
+            'error' => [
+                'code' => $code,
+                'message' => $message,
+                'payload' => $payload,
+            ],
+        ], $code);
+    }
+
+    /**
      * @param $body
      * @param int $code
      * @return static
@@ -26,21 +43,5 @@ class JsonResponse extends Response
         $response = new static($code, [], $body);
         $response = $response->withHeader('Content-Type', 'application/json');
         return $response;
-    }
-
-    /**
-     * @param $message
-     * @param int $code
-     * @param null $payload
-     * @return static
-     */
-    public static function createError($message, $code = 500, $payload=null){
-        return static::create([
-            'error' => [
-                'code'      => $code,
-                'message'   => $message,
-                'payload'  => $payload,
-            ],
-        ], $code);
     }
 }

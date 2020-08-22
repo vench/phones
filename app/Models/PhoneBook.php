@@ -4,7 +4,6 @@
 namespace App\Models;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class PhoneBook

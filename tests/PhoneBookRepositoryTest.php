@@ -11,27 +11,32 @@ namespace Tests;
 class PhoneBookRepositoryTest extends TestBase
 {
 
-    public function testAll() {
+    public function testAll()
+    {
         $this->assertTrue(true);
 
     }
 
-    public function testOne() {
+    public function testOne()
+    {
         $this->assertTrue(true);
 
     }
 
-    public function testCreate() {
+    public function testCreate()
+    {
         $this->assertTrue(true);
 
     }
 
-    public function testUpdate() {
+    public function testUpdate()
+    {
         $this->assertTrue(true);
 
     }
 
-    public function testDelete() {
+    public function testDelete()
+    {
         $this->assertTrue(true);
 
     }
