@@ -16,6 +16,5 @@ class Log
      */
     public function log($message, $level = 0) {
         // TODO not yet implementation
-        var_dump($message);
     }
 }

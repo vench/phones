@@ -9,6 +9,10 @@ use App\Repositories\PhoneBookRepository;
 use App\Service\Countries;
 use App\Service\Timezones;
 
+/**
+ * Class PhoneBookValidator
+ * @package App\Validators
+ */
 class PhoneBookValidator
 {
 
