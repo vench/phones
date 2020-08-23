@@ -33,6 +33,7 @@ class App
     public function runWeb()
     {
         $this->initConfig();
+        $this->setObject(Request::class, Request::create());
         $invRoute = $this->initRoute();
         $invRoute->send();
     }
@@ -40,7 +41,7 @@ class App
     /**
      * @throws ReflectionException
      */
-    private function initConfig()
+    public function initConfig()
     {
         $config = $this->getObject(Config::class);
         $config->run();
@@ -84,15 +85,15 @@ class App
      */
     private function initRoute()
     {
-        $this->setObject(Request::class, Request::create());
         $invokeRoute = new InvokeRoute($this);
         try {
             $invokeRoute->run();
         } catch (\HttpException $e) {
+            $this->getObject(Log::class)->logException($e);
             $errorResponse = JsonResponse::createError($e->getMessage(), $e->getCode());
             $invokeRoute->setResponse($errorResponse);
         } catch (\Exception $e) {
-            $this->getObject(Log::class)->log($e->getMessage());
+            $this->getObject(Log::class)->logException($e);
             $errorResponse = JsonResponse::createError('Internal application error', 500);
             $invokeRoute->setResponse($errorResponse);
         }

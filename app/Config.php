@@ -17,14 +17,14 @@ class Config
     /**
      * @var array
      */
-    private $settings;
+    private $settings = [];
 
     /**
      *
      */
     public function run()
     {
-        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/..');
+        $dotenv = Dotenv::createUnsafeMutable(__DIR__ . '/..');
         $this->settings = $dotenv->load();
         $dotenv->required([
             'DATABASE_NAME', 'DATABASE_HOST', 'DATABASE_LOGIN', 'DATABASE_PASSWORD',

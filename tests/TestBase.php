@@ -44,10 +44,7 @@ class TestBase extends TestCase
         }
         $headers = [];
 
-        $request = new Request($method,
-            $uri,
-            $headers,
-            $body);
+        $request = new Request($method, $uri, $headers, $body);
         $this->app()->setObject(Request::class, $request);
         $response = $this->app()->runTest();
         return $response;
@@ -60,6 +57,7 @@ class TestBase extends TestCase
     {
         if (is_null($this->app)) {
             $this->app = new App();
+            $this->app->initConfig();
         }
         return $this->app;
     }
@@ -103,5 +101,7 @@ class TestBase extends TestCase
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+
+        $this->app()->initConfig();
     }
 }

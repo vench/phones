@@ -10,6 +10,15 @@ namespace App\Service;
 class Log
 {
 
+
+    /**
+     * @param \Exception $exception
+     */
+    public function logException(\Exception $exception) {
+        // TODO not yet implementation
+        //throw $exception;
+    }
+
     /**
      * @param $message
      * @param int $level

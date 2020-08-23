@@ -13,14 +13,16 @@ class Request extends GuzzleRequest
 {
 
     /**
-     * @var null
+     * Request constructor.
+     * @param $method
+     * @param $uri
+     * @param array $headers
+     * @param null $body
+     * @param string $version
      */
-    private $rawBody;
-
     public function __construct($method, $uri, array $headers = [], $body = null, $version = '1.1')
     {
         parent::__construct($method, $uri, $headers, $body, $version);
-        $this->rawBody = $body;
     }
 
     /**
@@ -68,9 +70,6 @@ class Request extends GuzzleRequest
     public function json()
     {
         $contents = $this->getBody()->getContents();
-        if (empty($contents)) {
-            $contents = $this->rawBody;
-        }
         $json = json_decode($contents, true);
         return $json;
     }

@@ -4,6 +4,9 @@
 namespace Tests;
 
 
+use App\Models\PhoneBook;
+use App\Repositories\PhoneBookRepository;
+
 /**
  * Class PhoneBookRepositoryTest
  * @package Tests
@@ -11,33 +14,74 @@ namespace Tests;
 class PhoneBookRepositoryTest extends TestBase
 {
 
+    /**
+     * @return mixed|PhoneBookRepository
+     * @throws \ReflectionException
+     */
+    private function getRepository() {
+        return $this->app()->getObject(PhoneBookRepository::class);
+    }
+
+    /**
+     * @throws \ReflectionException
+     * @depends testCreate
+     */
     public function testAll()
     {
-        $this->assertTrue(true);
-
+        $list = $this->getRepository()->all();
+        $this->assertTrue(is_array($list));
+        $this->assertTrue(count($list) > 0);
     }
 
-    public function testOne()
+    /**
+     * @param PhoneBook $item
+     * @depends testCreate
+     */
+    public function testOne(PhoneBook $item)
     {
-        $this->assertTrue(true);
-
+        $load = $this->getRepository()->one($item->id);
+        $this->assertEquals($item->id, $load->id);
     }
 
+    /**
+     * @return PhoneBook
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
+     */
     public function testCreate()
     {
-        $this->assertTrue(true);
+        $faker = \Faker\Factory::create();
 
+        $item = PhoneBook::create([
+            'firstName'     => $faker->firstName,
+            'phoneNumber'   => "+7911{$faker->biasedNumberBetween(1000000,9999999)}",
+        ]);
+        $this->getRepository()->create($item);
+        $this->assertNotEmpty($item->id);
+        return $item;
     }
 
-    public function testUpdate()
+    /**
+     * @param PhoneBook $item
+     * @depends testCreate
+     */
+    public function testUpdate(PhoneBook $item)
     {
-        $this->assertTrue(true);
+        $item->lastName = 'New last name';
+        $update = $this->getRepository()->update($item);
+        $this->assertTrue($update->lastName == $item->lastName);
 
+        return $item;
     }
 
-    public function testDelete()
+    /**
+     * @param PhoneBook $item
+     * @depends testUpdate
+     */
+    public function testDelete($item)
     {
-        $this->assertTrue(true);
+        $this->assertTrue($this->getRepository()->delete($item->id));
 
     }
 }

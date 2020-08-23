@@ -27,14 +27,15 @@ class PhoneBookControllerTest extends TestBase
     }
 
     /**
-     *
+     * @param $item
+     * @throws \ReflectionException
+     * @depends testCreate
      */
-    public function testOne()
+    public function testOne($item)
     {
-        $id = $this->testCreate();
-        $this->assertNotEmpty($id);
+        $this->assertNotEmpty($item);
 
-        $response = $this->httpGet("/phone-book/{$id}");
+        $response = $this->httpGet("/phone-book/{$item['id']}");
         $this->assertEquals($response->getStatusCode(), 200);
         $data = json_decode($response->getBody(), true);
         $this->assertArrayHasKey('item', $data);
@@ -45,12 +46,14 @@ class PhoneBookControllerTest extends TestBase
      */
     public function testCreate()
     {
+        $faker = \Faker\Factory::create();
+
         $item = PhoneBook::create([
-            'firstName' => 'firstName',
+            'firstName'     => $faker->firstName,
+            'phoneNumber'   => "+7911{$faker->biasedNumberBetween(1000000,9999999)}",
         ]);
         $body = json_encode($item);
         $response = $this->httpPost('/phone-book', $body);
-
         $this->assertEquals($response->getStatusCode(), 200);
         $data = json_decode($response->getBody(), true);
 
@@ -58,37 +61,38 @@ class PhoneBookControllerTest extends TestBase
         $this->assertArrayHasKey('id', $data['item']);
         $this->assertArrayHasKey('firstName', $data['item']);
 
-        return $data['item']['id'];
+        return $data['item'];
     }
 
     /**
-     *
+     * @param $item
+     * @throws \ReflectionException
+     * @return  array
+     * @depends testCreate
      */
-    public function testUpdate()
+    public function testUpdate($item)
     {
-        $id = $this->testCreate();
-        $this->assertNotEmpty($id);
+        $this->assertNotEmpty($item);
 
-        $item = PhoneBook::create([
-            'firstName' => 'firstName',
-        ]);
+        $item['firstName'] = 'firstName';
         $body = json_encode($item);
-        $response = $this->httpPut("/phone-book/{$id}", $body);
+        $response = $this->httpPut("/phone-book/{$item['id']}", $body);
 
         $this->assertEquals($response->getStatusCode(), 200);
         $data = json_decode($response->getBody(), true);
 
         $this->assertArrayHasKey('item', $data);
+        return $data['item'];
     }
 
     /**
-     *
+     * @depends testUpdate
+     * @param $item
      */
-    public function testDelete()
+    public function testDelete($item)
     {
-        $id = $this->testCreate();
-        $this->assertNotEmpty($id);
-        $response = $this->httpDelete("/phone-book/{$id}");
+        $this->assertNotEmpty($item);
+        $response = $this->httpDelete("/phone-book/{$item['id']}");
 
         $this->assertEquals($response->getStatusCode(), 200);
     }
